@@ -24,5 +24,12 @@ namespace CodeBase.Controllers
         {
             return _userRepository.GetAll();
         }
+
+        [HttpGet("{id}")]
+        public User GetById(short id)
+        {
+            return _userRepository.Getbyid(id);
+        }
+
     }
 }

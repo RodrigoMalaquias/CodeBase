@@ -6,5 +6,6 @@ namespace CodeBase.Repositories
     public interface IUserRepository
     {
         IEnumerable<User> GetAll();
+        User Getbyid(short id);
     }
 }
