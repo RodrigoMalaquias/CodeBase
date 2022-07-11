@@ -1,8 +1,7 @@
-using CodeBase.Context;
 using CodeBase.Repositories;
+using CodeBase.UseCases;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +29,9 @@ namespace CodeBase
                 options.UseSqlServer(Configuration.GetConnectionString("local")));
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGetUserUseCase, GetUserUseCase>();
+
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddSwaggerGen();
 

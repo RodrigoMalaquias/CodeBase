@@ -1,7 +1,7 @@
-﻿using CodeBase.Model;
+﻿using CodeBase.Borders.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace CodeBase.Context
+namespace CodeBase.Repositories
 {
     public class ApplicationContext : DbContext
     {

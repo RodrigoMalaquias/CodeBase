@@ -1,8 +1,10 @@
-﻿using CodeBase.Model;
-using CodeBase.Repositories;
+﻿using CodeBase.Borders;
+using CodeBase.UseCases;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CodeBase.Controllers
 {
@@ -10,25 +12,25 @@ namespace CodeBase.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IGetUserUseCase _getUserUseCase;
         private readonly ILogger<UserController> _logger;
 
-        public UserController(ILogger<UserController> logger, IUserRepository userRepository)
+        public UserController(ILogger<UserController> logger, IGetUserUseCase getUserUseCase)
         {
             _logger = logger;
-            _userRepository = userRepository;
+            _getUserUseCase = getUserUseCase;
         }
 
         [HttpGet]
-        public IEnumerable<User> Get()
+        public async Task<IEnumerable<UserViewModel>> GetAsync()
         {
-            return _userRepository.GetAll();
+            return await _getUserUseCase.GetAllUserAsync();
         }
 
         [HttpGet("{id}")]
-        public User GetById(short id)
+        public async Task<UserViewModel> GetByIdAsync(Guid id)
         {
-            return _userRepository.Getbyid(id);
+            return await _getUserUseCase.GetUserAsync(id);
         }
 
     }
