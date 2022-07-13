@@ -9,6 +9,7 @@ namespace CodeBase.Profiles
         public AutoMapping()
         {
             CreateMap<User, UserViewModel>();
+            CreateMap<UserViewModel, User>();
         } 
     }
 }

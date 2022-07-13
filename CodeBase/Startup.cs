@@ -1,5 +1,9 @@
+using CodeBase.Borders;
+using CodeBase.Borders.Validator;
 using CodeBase.Repositories;
 using CodeBase.UseCases;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -7,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
 
 namespace CodeBase
 {
@@ -30,8 +33,14 @@ namespace CodeBase
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGetUserUseCase, GetUserUseCase>();
+            services.AddScoped<IAddUserUseCase, AddUserUseCase>();
+            services.AddScoped<IValidator<UserViewModel>, UserValidator>();
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddControllers()
+                .AddFluentValidation(x => x
+                .RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddSwaggerGen();
 

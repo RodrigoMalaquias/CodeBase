@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CodeBase.Borders;
+using CodeBase.Borders.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,13 @@ namespace CodeBase.Repositories
             _mapper = mapper;
         }
 
+        public async Task AddAsync(UserViewModel user)
+        {
+            var entity = _mapper.Map<User>(user);
+            await _context.AddAsync(entity);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<UserViewModel>> GetAllAsync()
         {
             var users = await _context.User.ToListAsync();
@@ -30,5 +38,7 @@ namespace CodeBase.Repositories
             var user = await _context.User.Where(i => i.Id == id).FirstOrDefaultAsync();
             return _mapper.Map<UserViewModel>(user);
         }
+
+       
     }
 }

@@ -9,5 +9,6 @@ namespace CodeBase.Repositories
     {
         Task<IEnumerable<UserViewModel>> GetAllAsync();
         Task<UserViewModel> GetbyidAsync(Guid id);
+        Task AddAsync(UserViewModel user);
     }
 }
