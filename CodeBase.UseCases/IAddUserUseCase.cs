@@ -1,5 +1,4 @@
 ﻿using CodeBase.Borders;
-using System;
 using System.Threading.Tasks;
 
 namespace CodeBase.UseCases

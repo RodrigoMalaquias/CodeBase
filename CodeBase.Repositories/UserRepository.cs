@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using CodeBase.Borders;
-using CodeBase.Borders.Model;
+﻿using CodeBase.Borders.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -12,33 +10,28 @@ namespace CodeBase.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly ApplicationContext _context;
-        private readonly IMapper _mapper;
 
-        public UserRepository(ApplicationContext context, IMapper mapper)
+        public UserRepository(ApplicationContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
-        public async Task AddAsync(UserViewModel user)
+        public async Task AddAsync(User user)
         {
-            var entity = _mapper.Map<User>(user);
-            await _context.AddAsync(entity);
+            await _context.AddAsync(user);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<UserViewModel>> GetAllAsync()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
-            var users = await _context.User.ToListAsync();
-            return _mapper.Map<IEnumerable<UserViewModel>>(users);
+            return await _context.User.ToListAsync();
         }
 
-        public async Task<UserViewModel> GetbyidAsync(Guid id)
+        public async Task<User> GetbyidAsync(Guid id)
         {
-            var user = await _context.User.Where(i => i.Id == id).FirstOrDefaultAsync();
-            return _mapper.Map<UserViewModel>(user);
+            return await _context.User.Where(i => i.Id == id).FirstOrDefaultAsync();
         }
 
-       
+
     }
 }

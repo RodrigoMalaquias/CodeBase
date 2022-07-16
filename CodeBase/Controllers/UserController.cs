@@ -41,18 +41,15 @@ namespace CodeBase.Controllers
         [HttpPost]
         public async Task AddUser(UserViewModel user)
         {
-            var validatiion = await _validator.ValidateAsync(user);
+            try
+            {
+                await _validator.ValidateAndThrowAsync(user);
 
-            if (validatiion.IsValid)
-            {
-               await _addUserUseCase.AddUserAsync(user);
+                await _addUserUseCase.AddUserAsync(user);
             }
-            else
+            catch(ValidationException ex)
             {
-                foreach (var failure in validatiion.Errors)
-                {
-                    Console.WriteLine($"Property " + failure.PropertyName + "Erro: " + failure.ErrorMessage + "\n");
-                }
+                _logger.LogInformation($"Erro na validação do usuário - {ex}");
             }
         }
 

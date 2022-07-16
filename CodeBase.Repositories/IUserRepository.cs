@@ -1,4 +1,4 @@
-﻿using CodeBase.Borders;
+﻿using CodeBase.Borders.Model;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,8 +7,8 @@ namespace CodeBase.Repositories
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<UserViewModel>> GetAllAsync();
-        Task<UserViewModel> GetbyidAsync(Guid id);
-        Task AddAsync(UserViewModel user);
+        Task<IEnumerable<User>> GetAllAsync();
+        Task<User> GetbyidAsync(Guid id);
+        Task AddAsync(User user);
     }
 }
