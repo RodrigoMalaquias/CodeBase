@@ -19,7 +19,7 @@ namespace CodeBase.UseCases
 
         public async Task<IEnumerable<UserViewModel>> GetAllUserAsync()
         {
-           var users = await _userRepository.GetAllAsync();
+           var users = await _userRepository.GetAllUsersAsync();
            return _mapper.Map<IEnumerable<UserViewModel>>(users);
         }
 

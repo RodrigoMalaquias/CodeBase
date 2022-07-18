@@ -24,6 +24,12 @@ namespace CodeBase.Test.Builders
             return this;
         }
 
+        public UserBuilder AddName(string name)
+        {
+            user.Name = name;
+            return this;
+        }
+
         public User Build() => user;
     }
 }

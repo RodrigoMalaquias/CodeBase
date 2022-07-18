@@ -7,7 +7,7 @@ namespace CodeBase.Repositories
 {
     public interface IUserRepository
     {
-        Task<IEnumerable<User>> GetAllAsync();
+        Task<IEnumerable<User>> GetAllUsersAsync();
         Task<User> GetbyidAsync(Guid id);
         Task AddAsync(User user);
     }

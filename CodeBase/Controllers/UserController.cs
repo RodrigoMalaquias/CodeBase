@@ -27,15 +27,16 @@ namespace CodeBase.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<UserViewModel>> GetAsync()
+        public async Task<IEnumerable<UserViewModel>> GetAllUserAsync()
         {
             return await _getUserUseCase.GetAllUserAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<UserViewModel> GetByIdAsync(Guid id)
+        public async Task<ActionResult<UserViewModel>> GetByIdAsync(Guid id)
         {
-            return await _getUserUseCase.GetUserAsync(id);
+            var user =  await _getUserUseCase.GetUserAsync(id);
+            return user != null ? user : NotFound();
         }
 
         [HttpPost]

@@ -22,7 +22,7 @@ namespace CodeBase.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<User>> GetAllAsync()
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
             return await _context.User.ToListAsync();
         }
