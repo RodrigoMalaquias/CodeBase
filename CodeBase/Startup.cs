@@ -1,16 +1,16 @@
-using CodeBase.Repositories;
-using CodeBase.UseCases;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
-
 namespace CodeBase
 {
+    using Converters;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.SpaServices.AngularCli;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Repositories;
+    using UseCases;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -28,8 +28,9 @@ namespace CodeBase
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("local")));
 
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IGetUserUseCase, GetUserUseCase>();
+            services.AddScoped<IActionResultConverter, ActionResultConverter>();
+            services.AddUseCases();
+            services.AddRepositories();
 
             services.AddAutoMapper(typeof(Startup));
 

@@ -1,8 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
-namespace CodeBase.Borders.Model
+﻿namespace CodeBase.Borders.Models
 {
+    using System;
+    using System.ComponentModel.DataAnnotations;
+
     public class User
     {
         [Key]
