@@ -1,7 +1,7 @@
 ﻿namespace CodeBase.Repositories
 {
-    using Users;
     using Microsoft.Extensions.DependencyInjection;
+    using Users;
 
     public static class Bootstrapper
     {

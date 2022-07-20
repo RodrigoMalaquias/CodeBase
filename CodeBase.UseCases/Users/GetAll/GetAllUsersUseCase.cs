@@ -28,7 +28,7 @@
         {
             Log.Information("Getting all users.");
 
-            var users = await _userRepository.GetAllAsync();
+            IEnumerable<UserViewModel> users = await _userRepository.GetAllAsync();
 
             if (users is null)
             {
@@ -36,7 +36,7 @@
                 throw new NotFoundException("Users not found.");
             }
 
-            var usersViewModel = _mapper.Map<IEnumerable<UserViewModel>>(users);
+            IEnumerable<UserViewModel> usersViewModel = _mapper.Map<IEnumerable<UserViewModel>>(users);
             return await OK(usersViewModel);
         }
     }

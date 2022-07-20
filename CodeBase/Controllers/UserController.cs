@@ -1,9 +1,9 @@
 ﻿namespace CodeBase.Controllers
 {
-    using Borders.Shared;
     using Borders.ViewModel;
     using Converters;
     using Microsoft.AspNetCore.Mvc;
+    using Shared.Models;
     using System;
     using System.Collections.Generic;
     using System.Net;
@@ -34,7 +34,7 @@
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(IEnumerable<ErrorMessage>))]
         public async Task<IActionResult> GetAsync()
         {
-            var result = await _getAllUsersUseCase.Execute(true);
+            Borders.Shared.UseCaseResponse<IEnumerable<UserViewModel>> result = await _getAllUsersUseCase.Execute(true);
             return _actionResultConverter.Convert(result);
         }
 
@@ -44,7 +44,7 @@
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(IEnumerable<ErrorMessage>))]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
-            var result = await _getUserByIdUseCase.Execute(id);
+            Borders.Shared.UseCaseResponse<UserViewModel> result = await _getUserByIdUseCase.Execute(id);
             return _actionResultConverter.Convert(result);
         }
     }

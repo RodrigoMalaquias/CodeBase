@@ -28,7 +28,7 @@
         {
             Log.Information("Getting user.\n  Request:{@request}", request);
 
-            var user = await _userRepository.GetByIdAsync(request);
+            UserViewModel user = await _userRepository.GetByIdAsync(request);
 
             if (user is null)
             {
@@ -36,7 +36,7 @@
                 throw new NotFoundException("User not found.");
             }
 
-            var userViewModel = _mapper.Map<UserViewModel>(user);
+            UserViewModel userViewModel = _mapper.Map<UserViewModel>(user);
             return await OK(userViewModel);
         }
     }

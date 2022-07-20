@@ -9,6 +9,6 @@
         public AutoMapping()
         {
             CreateMap<User, UserViewModel>();
-        } 
+        }
     }
 }

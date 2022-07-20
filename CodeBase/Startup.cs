@@ -38,15 +38,13 @@ namespace CodeBase
             Log.Information("CodeBase started.");
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
 
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("local")));
+                options.UseSqlServer(_configuration.GetConnectionString("local")));
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IActionResultConverter, ActionResultConverter>();

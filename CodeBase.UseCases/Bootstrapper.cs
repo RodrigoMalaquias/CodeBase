@@ -1,8 +1,8 @@
 ﻿namespace CodeBase.UseCases
 {
-    using Users.GetById;
     using Microsoft.Extensions.DependencyInjection;
     using Users.GetAll;
+    using Users.GetById;
 
     public static class Bootstrapper
     {

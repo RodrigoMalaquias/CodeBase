@@ -4,6 +4,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Serilog;
+    using Shared.Models;
     using System.Linq;
 
     public class ActionResultConverter : IActionResultConverter
@@ -38,8 +39,8 @@
                 return BuildResult(response.Result, response.Status);
             }
 
-            var hasNoErrors = response.Errors == null || !response.Errors.Any();
-            var errorResult = hasNoErrors
+            bool hasNoErrors = response.Errors == null || !response.Errors.Any();
+            System.Collections.Generic.IEnumerable<ErrorMessage> errorResult = hasNoErrors
                 ? new[] { new ErrorMessage("000", "Unknown error") }
                 : response.Errors;
 

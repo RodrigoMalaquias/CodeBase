@@ -1,4 +1,4 @@
-﻿namespace CodeBase.Borders.Shared
+﻿namespace CodeBase.Shared.Models
 {
     public class ErrorMessage
     {
