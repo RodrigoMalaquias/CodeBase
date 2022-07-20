@@ -3,19 +3,39 @@ namespace CodeBase
     using Converters;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Repositories;
+    using Serilog;
+    using Serilog.Exceptions;
+    using System;
     using UseCases;
 
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _env;
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
-            Configuration = configuration;
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _env = env ?? throw new ArgumentNullException(nameof(env));
+
+            var loggerConfig = new LoggerConfiguration().ReadFrom.Configuration(_configuration);
+
+            if (!env.IsEnvironment("Development"))
+            {
+                loggerConfig
+                    .Enrich.FromLogContext()
+                    .Enrich.WithExceptionDetails();
+            }
+
+            Log.Logger = loggerConfig.CreateLogger();
+            Log.Information("CodeBase started.");
         }
 
         public IConfiguration Configuration { get; }
@@ -28,6 +48,7 @@ namespace CodeBase
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("local")));
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IActionResultConverter, ActionResultConverter>();
             services.AddUseCases();
             services.AddRepositories();
