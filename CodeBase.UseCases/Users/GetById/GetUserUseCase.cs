@@ -28,7 +28,7 @@
         {
             Log.Information("Getting user.\n  Request:{@request}", request);
 
-            UserViewModel user = await _userRepository.GetByIdAsync(request);
+            var user = await _userRepository.GetByIdAsync(request);
 
             if (user is null)
             {

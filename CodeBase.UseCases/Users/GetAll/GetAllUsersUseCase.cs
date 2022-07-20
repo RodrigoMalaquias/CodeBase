@@ -14,6 +14,7 @@
     {
         public override string DefaultErrorMessage => "";
         public override string DefaultSuccessMessage => "";
+
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
 
@@ -28,7 +29,7 @@
         {
             Log.Information("Getting all users.");
 
-            IEnumerable<UserViewModel> users = await _userRepository.GetAllAsync();
+            var users = await _userRepository.GetAllAsync();
 
             if (users is null)
             {
@@ -36,7 +37,7 @@
                 throw new NotFoundException("Users not found.");
             }
 
-            IEnumerable<UserViewModel> usersViewModel = _mapper.Map<IEnumerable<UserViewModel>>(users);
+            var usersViewModel = _mapper.Map<IEnumerable<UserViewModel>>(users);
             return await OK(usersViewModel);
         }
     }

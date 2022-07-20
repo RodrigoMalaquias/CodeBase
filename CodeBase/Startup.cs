@@ -1,6 +1,7 @@
 namespace CodeBase
 {
     using Converters;
+    using FluentValidation.AspNetCore;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -13,6 +14,9 @@ namespace CodeBase
     using Serilog;
     using Serilog.Exceptions;
     using System;
+    using Borders.Validator;
+    using Borders.ViewModel;
+    using FluentValidation;
     using UseCases;
 
     public class Startup
@@ -51,7 +55,14 @@ namespace CodeBase
             services.AddUseCases();
             services.AddRepositories();
 
+            //TODO: Put this in an extension method
+            services.AddScoped<IValidator<UserViewModel>, UserViewModelValidator>();
+
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddControllers()
+                .AddFluentValidation(x => x
+                .RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddSwaggerGen();
 
