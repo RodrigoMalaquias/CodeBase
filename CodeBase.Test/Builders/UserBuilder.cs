@@ -1,35 +1,35 @@
-﻿using CodeBase.Borders.Model;
-using System;
-
-namespace CodeBase.Test.Builders
+﻿namespace CodeBase.Test.Builders
 {
+    using Borders.Models;
+    using System;
+
     public class UserBuilder
     {
-        private readonly User user;
+        private readonly User _user;
 
         public UserBuilder()
         {
-            user = new User();
+            _user = new User();
         }
 
         public UserBuilder AddGuid(Guid id)
         {
-            user.Id = id;
+            _user.Id = id;
             return this;
         }
 
         public UserBuilder AddAge(int age)
         {
-            user.Age = age;
+            _user.Age = age;
             return this;
         }
 
         public UserBuilder AddName(string name)
         {
-            user.Name = name;
+            _user.Name = name;
             return this;
         }
 
-        public User Build() => user;
+        public User Build() => _user;
     }
 }
