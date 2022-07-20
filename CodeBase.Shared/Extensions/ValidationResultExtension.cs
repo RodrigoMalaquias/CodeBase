@@ -1,7 +1,7 @@
-﻿namespace CodeBase.Borders.Extensions
+﻿namespace CodeBase.Shared.Extensions
 {
     using FluentValidation.Results;
-    using Shared;
+    using Models;
     using System.Collections.Generic;
     using System.Linq;
 

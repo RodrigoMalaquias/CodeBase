@@ -1,13 +1,14 @@
 ﻿namespace CodeBase.Controllers
 {
-    using Borders.Shared;
     using Borders.ViewModel;
     using Converters;
     using Microsoft.AspNetCore.Mvc;
+    using Shared.Models;
     using System;
     using System.Collections.Generic;
     using System.Net;
     using System.Threading.Tasks;
+    using UseCases.Users.Add;
     using UseCases.Users.GetAll;
     using UseCases.Users.GetById;
 
@@ -18,14 +19,17 @@
         private readonly IActionResultConverter _actionResultConverter;
         private readonly IGetUserByIdUseCase _getUserByIdUseCase;
         private readonly IGetAllUsersUseCase _getAllUsersUseCase;
+        private readonly IAddUserUseCase _addUserUseCase;
 
         public UserController(IActionResultConverter actionResultConverter,
             IGetUserByIdUseCase getUserByIdUseCase,
-            IGetAllUsersUseCase getAllUsersUseCase)
+            IGetAllUsersUseCase getAllUsersUseCase,
+            IAddUserUseCase addUserUseCase)
         {
             _actionResultConverter = actionResultConverter ?? throw new ArgumentNullException(nameof(actionResultConverter));
             _getUserByIdUseCase = getUserByIdUseCase ?? throw new ArgumentNullException(nameof(getUserByIdUseCase));
             _getAllUsersUseCase = getAllUsersUseCase ?? throw new ArgumentNullException(nameof(getAllUsersUseCase));
+            _addUserUseCase = addUserUseCase ?? throw new ArgumentNullException(nameof(addUserUseCase));
         }
 
         [HttpGet]
@@ -45,6 +49,16 @@
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
             var result = await _getUserByIdUseCase.Execute(id);
+            return _actionResultConverter.Convert(result);
+        }
+
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Created, Type = typeof(bool))]
+        [ProducesResponseType((int)HttpStatusCode.NotFound, Type = typeof(IEnumerable<ErrorMessage>))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(IEnumerable<ErrorMessage>))]
+        public async Task<IActionResult> CreateUser([FromBody] UserViewModel request)
+        {
+            var result = await _addUserUseCase.Execute(request);
             return _actionResultConverter.Convert(result);
         }
     }

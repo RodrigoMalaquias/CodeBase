@@ -1,12 +1,13 @@
 ﻿namespace CodeBase.Borders.Shared
 {
+    using CodeBase.Shared;
+    using CodeBase.Shared.Extensions;
+    using Exceptions;
+    using FluentValidation;
     using System;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Exceptions;
-    using Extensions;
-    using FluentValidation;
 
     public abstract class UseCaseBase<TRequest, TResponse> : IUseCase<TRequest, TResponse>
     {
@@ -15,15 +16,15 @@
 
         public async Task<UseCaseResponse<TResponse>> Execute(TRequest request)
         {
-            var useCaseResponse = new UseCaseResponse<TResponse>();
+            UseCaseResponse<TResponse> useCaseResponse = new();
 
             try
             {
-                var response = await ExecuteUseCaseAsync(request);
+                SuccessResponse<TResponse> response = await ExecuteUseCaseAsync(request);
 
                 switch (response.ResponseKind)
                 {
-                    case SuccessKind.OK:
+                    case SuccessKind.Ok:
                         return useCaseResponse.SetResult(response.ResponseValue, request, DefaultSuccessMessage);
                     case SuccessKind.Created:
                         return useCaseResponse.SetCreated(response.ResponseValue, request, DefaultSuccessMessage);
@@ -35,10 +36,10 @@
             }
             catch (ValidationException e)
             {
-                var errorsMessage = e.Errors.ToErrorMessages();
+                System.Collections.Generic.List<CodeBase.Shared.Models.ErrorMessage> errorsMessage = e.Errors.ToErrorMessages().ToList();
 
-                if (!errorsMessage.Any())
-                    errorsMessage.Append(BuilderErrorMessage.Build(e.Message));
+                if (errorsMessage.IsNullOrEmpty())
+                    errorsMessage.Add(BuilderErrorMessage.Build(e.Message));
 
                 return useCaseResponse.SetBadRequest(errorsMessage, request, e, DefaultErrorMessage);
             }
@@ -72,7 +73,7 @@
 
         protected Task<SuccessResponse<TResponse>> OK(TResponse responseValue)
         {
-            return Task.FromResult(new SuccessResponse<TResponse>(responseValue, SuccessKind.OK));
+            return Task.FromResult(new SuccessResponse<TResponse>(responseValue));
         }
 
         protected Task<SuccessResponse<TResponse>> Created(TResponse responseValue)
@@ -87,7 +88,7 @@
 
         protected class SuccessResponse<T>
         {
-            public SuccessResponse(T responseValue, SuccessKind responseKind = SuccessKind.OK)
+            public SuccessResponse(T responseValue, SuccessKind responseKind = SuccessKind.Ok)
             {
                 ResponseValue = responseValue;
                 ResponseKind = responseKind;
@@ -100,7 +101,7 @@
 
         protected enum SuccessKind
         {
-            OK,
+            Ok,
             Created,
             Accepted
         }

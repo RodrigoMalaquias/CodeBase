@@ -36,7 +36,7 @@
                 throw new NotFoundException("User not found.");
             }
 
-            var userViewModel = _mapper.Map<UserViewModel>(user);
+            UserViewModel userViewModel = _mapper.Map<UserViewModel>(user);
             return await OK(userViewModel);
         }
     }

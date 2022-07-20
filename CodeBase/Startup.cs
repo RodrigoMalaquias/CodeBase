@@ -1,24 +1,46 @@
 namespace CodeBase
 {
     using Converters;
+    using FluentValidation.AspNetCore;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.SpaServices.AngularCli;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Repositories;
+    using Serilog;
+    using Serilog.Exceptions;
+    using System;
+    using Borders.Validator;
+    using Borders.ViewModel;
+    using FluentValidation;
     using UseCases;
 
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _env;
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        {
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _env = env ?? throw new ArgumentNullException(nameof(env));
+
+            var loggerConfig = new LoggerConfiguration().ReadFrom.Configuration(_configuration);
+
+            if (!env.IsEnvironment("Development"))
+            {
+                loggerConfig
+                    .Enrich.FromLogContext()
+                    .Enrich.WithExceptionDetails();
+            }
+
+            Log.Logger = loggerConfig.CreateLogger();
+            Log.Information("CodeBase started.");
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -26,13 +48,21 @@ namespace CodeBase
             services.AddControllersWithViews();
 
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("local")));
+                options.UseSqlServer(_configuration.GetConnectionString("local")));
 
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IActionResultConverter, ActionResultConverter>();
             services.AddUseCases();
             services.AddRepositories();
 
+            //TODO: Put this in an extension method
+            services.AddScoped<IValidator<UserViewModel>, UserViewModelValidator>();
+
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddControllers()
+                .AddFluentValidation(x => x
+                .RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddSwaggerGen();
 

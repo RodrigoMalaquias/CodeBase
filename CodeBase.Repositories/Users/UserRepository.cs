@@ -1,33 +1,36 @@
 ﻿namespace CodeBase.Repositories.Users
 {
-    using AutoMapper;
-    using Borders.ViewModel;
     using Microsoft.EntityFrameworkCore;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
+    using Borders.Models;
 
     public class UserRepository : IUserRepository
     {
         private readonly ApplicationContext _context;
-        private readonly IMapper _mapper;
 
-        public UserRepository(ApplicationContext context, IMapper mapper)
+        public UserRepository(ApplicationContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<UserViewModel>> GetAllAsync()
+        public async Task<bool> AddAsync(User user, CancellationToken cancellationToken = default)
         {
-            var users = await _context.User.ToListAsync();
-            return _mapper.Map<IEnumerable<UserViewModel>>(users);
+            await _context.AddAsync(user, cancellationToken: cancellationToken);
+            return await _context.SaveChangesAsync(cancellationToken: cancellationToken) > 0;
         }
 
-        public async Task<UserViewModel> GetByIdAsync(Guid id)
+        public async Task<IEnumerable<User>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            var user = await _context.User.FirstOrDefaultAsync(i => i.Id == id);
-            return _mapper.Map<UserViewModel>(user);
+            return await _context.User.ToListAsync(cancellationToken: cancellationToken);
+        }
+
+        public async Task<User> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            return await _context.User.Where(i => i.Id == id).FirstOrDefaultAsync(cancellationToken: cancellationToken);
         }
     }
 }

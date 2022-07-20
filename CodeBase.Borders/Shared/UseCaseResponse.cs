@@ -1,5 +1,7 @@
 ﻿namespace CodeBase.Borders.Shared
 {
+    using CodeBase.Shared;
+    using CodeBase.Shared.Models;
     using Serilog;
     using System;
     using System.Collections.Generic;

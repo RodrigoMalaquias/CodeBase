@@ -1,6 +1,6 @@
 ﻿namespace CodeBase.Borders.Exceptions
 {
-    using Shared;
+    using CodeBase.Shared.Models;
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;

@@ -1,9 +1,9 @@
 ﻿namespace CodeBase.Borders.Exceptions
 {
+    using CodeBase.Shared.Models;
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
-    using Shared;
 
     [Serializable]
     public class NotFoundException : UseCaseException

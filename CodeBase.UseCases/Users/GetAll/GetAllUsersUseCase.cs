@@ -14,6 +14,7 @@
     {
         public override string DefaultErrorMessage => "";
         public override string DefaultSuccessMessage => "";
+
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
 
