@@ -1,14 +1,15 @@
-﻿using AutoMapper;
-using CodeBase.Borders;
-using CodeBase.Borders.Model;
-
-namespace CodeBase.Profiles
+﻿namespace CodeBase.Profiles
 {
+    using AutoMapper;
+    using Borders.Models;
+    using Borders.ViewModel;
+
     public class AutoMapping : Profile
     {
         public AutoMapping()
         {
             CreateMap<User, UserViewModel>();
+            CreateMap<UserViewModel, User>();
         } 
     }
 }

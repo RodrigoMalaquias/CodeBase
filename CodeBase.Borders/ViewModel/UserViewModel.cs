@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CodeBase.Borders
+﻿namespace CodeBase.Borders.ViewModel
 {
     public class UserViewModel
     {

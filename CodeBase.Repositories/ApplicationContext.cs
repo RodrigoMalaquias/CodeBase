@@ -1,8 +1,8 @@
-﻿using CodeBase.Borders.Model;
-using Microsoft.EntityFrameworkCore;
-
-namespace CodeBase.Repositories
+﻿namespace CodeBase.Repositories
 {
+    using Borders.Models;
+    using Microsoft.EntityFrameworkCore;
+
     public class ApplicationContext : DbContext
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }

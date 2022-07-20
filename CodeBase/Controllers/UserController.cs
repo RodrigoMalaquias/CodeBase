@@ -1,37 +1,65 @@
-﻿using CodeBase.Borders;
-using CodeBase.UseCases;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace CodeBase.Controllers
+﻿namespace CodeBase.Controllers
 {
+    using Borders.ViewModel;
+    using Converters;
+    using Microsoft.AspNetCore.Mvc;
+    using Shared.Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Threading.Tasks;
+    using UseCases.Users.Add;
+    using UseCases.Users.GetAll;
+    using UseCases.Users.GetById;
+
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IGetUserUseCase _getUserUseCase;
-        private readonly ILogger<UserController> _logger;
+        private readonly IActionResultConverter _actionResultConverter;
+        private readonly IGetUserByIdUseCase _getUserByIdUseCase;
+        private readonly IGetAllUsersUseCase _getAllUsersUseCase;
+        private readonly IAddUserUseCase _addUserUseCase;
 
-        public UserController(ILogger<UserController> logger, IGetUserUseCase getUserUseCase)
+        public UserController(IActionResultConverter actionResultConverter,
+            IGetUserByIdUseCase getUserByIdUseCase,
+            IGetAllUsersUseCase getAllUsersUseCase,
+            IAddUserUseCase addUserUseCase)
         {
-            _logger = logger;
-            _getUserUseCase = getUserUseCase;
+            _actionResultConverter = actionResultConverter ?? throw new ArgumentNullException(nameof(actionResultConverter));
+            _getUserByIdUseCase = getUserByIdUseCase ?? throw new ArgumentNullException(nameof(getUserByIdUseCase));
+            _getAllUsersUseCase = getAllUsersUseCase ?? throw new ArgumentNullException(nameof(getAllUsersUseCase));
+            _addUserUseCase = addUserUseCase ?? throw new ArgumentNullException(nameof(addUserUseCase));
         }
 
         [HttpGet]
-        public async Task<IEnumerable<UserViewModel>> GetAsync()
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<UserViewModel>))]
+        [ProducesResponseType((int)HttpStatusCode.NotFound, Type = typeof(IEnumerable<ErrorMessage>))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(IEnumerable<ErrorMessage>))]
+        public async Task<IActionResult> GetAsync()
         {
-            return await _getUserUseCase.GetAllUserAsync();
+            var result = await _getAllUsersUseCase.Execute(true);
+            return _actionResultConverter.Convert(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<UserViewModel> GetByIdAsync(Guid id)
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(UserViewModel))]
+        [ProducesResponseType((int)HttpStatusCode.NotFound, Type = typeof(IEnumerable<ErrorMessage>))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(IEnumerable<ErrorMessage>))]
+        public async Task<IActionResult> GetByIdAsync(Guid id)
         {
-            return await _getUserUseCase.GetUserAsync(id);
+            var result = await _getUserByIdUseCase.Execute(id);
+            return _actionResultConverter.Convert(result);
         }
 
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Created, Type = typeof(bool))]
+        [ProducesResponseType((int)HttpStatusCode.NotFound, Type = typeof(IEnumerable<ErrorMessage>))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(IEnumerable<ErrorMessage>))]
+        public async Task<IActionResult> CreateUser([FromBody] UserViewModel request)
+        {
+            var result = await _addUserUseCase.Execute(request);
+            return _actionResultConverter.Convert(result);
+        }
     }
 }
