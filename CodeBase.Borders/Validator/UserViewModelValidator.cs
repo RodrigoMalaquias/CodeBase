@@ -1,5 +1,6 @@
 ﻿namespace CodeBase.Borders.Validator
 {
+    using CodeBase.Shared;
     using FluentValidation;
     using ViewModel;
 
@@ -8,13 +9,13 @@
         public UserViewModelValidator()
         {
             RuleFor(x => x.Name)
-                .NotNull().WithMessage("Name is required")
-                .MinimumLength(5).WithMessage("Minimum length must be 5 characters")
-                .MaximumLength(30).WithMessage("Maximum length must be 5 characters");
+                .NotNull().WithMessage(Messages.NameIsRequired)
+                .MinimumLength(5).WithMessage(Messages.NameMinimumLenght)
+                .MaximumLength(30).WithMessage(Messages.NameMaximunLenght);
 
             RuleFor(x => x.Age)
-                .NotNull().WithMessage("Age is required")
-               .GreaterThan(0).WithMessage("Age invalid");
+                .NotNull().WithMessage(Messages.AgeIsRequired)
+               .GreaterThan(0).WithMessage(Messages.AgeInvalid);
         }
     }
 }

@@ -8,8 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CodeBase.Shared
-{
+namespace CodeBase.Shared {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -55,6 +57,51 @@ namespace CodeBase.Shared
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Age invalid.
+        /// </summary>
+        public static string AgeInvalid {
+            get {
+                return ResourceManager.GetString("AgeInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Age is required.
+        /// </summary>
+        public static string AgeIsRequired {
+            get {
+                return ResourceManager.GetString("AgeIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name is required.
+        /// </summary>
+        public static string NameIsRequired {
+            get {
+                return ResourceManager.GetString("NameIsRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maximum length must be 5 characters.
+        /// </summary>
+        public static string NameMaximunLenght {
+            get {
+                return ResourceManager.GetString("NameMaximunLenght", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimum length must be 5 characters.
+        /// </summary>
+        public static string NameMinimumLenght {
+            get {
+                return ResourceManager.GetString("NameMinimumLenght", resourceCulture);
             }
         }
         
