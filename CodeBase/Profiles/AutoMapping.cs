@@ -3,6 +3,7 @@
     using AutoMapper;
     using Borders.Models;
     using Borders.ViewModel;
+    using System.Collections.Generic;
 
     public class AutoMapping : Profile
     {
@@ -10,6 +11,10 @@
         {
             CreateMap<User, UserViewModel>();
             CreateMap<UserViewModel, User>();
-        } 
+
+            CreateMap<Product, ProductViewModel>();
+            CreateMap<ProductViewModel, Product>();
+            CreateMap<IEnumerable<ProductViewModel>, IEnumerable<Product>>();
+        }
     }
 }
