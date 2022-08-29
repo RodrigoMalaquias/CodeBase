@@ -5,6 +5,8 @@
     using Users.GetAll;
     using Users.GetById;
     using Products.GetAll;
+    using CodeBase.UseCases.Products.Add;
+    using CodeBase.UseCases.Products.GetById;
 
     public static class Bootstrapper
     {
@@ -14,6 +16,8 @@
                 .AddScoped<IAddUserUseCase, AddUserUseCase>()
                 .AddScoped<IGetUserByIdUseCase, GetUserByIdUseCase>()
                 .AddScoped<IGetAllUsersUseCase, GetAllUsersUseCase>()
+                .AddScoped<IAddProductUseCase, AddProductUseCase>()
+                .AddScoped<IGetProductByIdUseCase, GetProductByIdUseCase>()
                 .AddScoped<IGetAllProductsUseCase, GetAllProductsUseCase>();
         }
     }
