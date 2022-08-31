@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CodeBase.UseCases.Products.GetById
 {
-    class GetProductByIdUseCase : UseCaseBase<Guid, ProductViewModel>, IGetProductByIdUseCase
+    public class GetProductByIdUseCase : UseCaseBase<Guid, ProductViewModel>, IGetProductByIdUseCase
     {
         public override string DefaultErrorMessage => "";
 
