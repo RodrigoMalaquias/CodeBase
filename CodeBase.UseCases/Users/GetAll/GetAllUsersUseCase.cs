@@ -10,7 +10,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    internal class GetAllUsersUseCase : UseCaseBase<bool, IEnumerable<UserViewModel>>, IGetAllUsersUseCase
+    public class GetAllUsersUseCase : UseCaseBase<bool, IEnumerable<UserViewModel>>, IGetAllUsersUseCase
     {
         public override string DefaultErrorMessage => "";
         public override string DefaultSuccessMessage => "";
