@@ -12,5 +12,10 @@
             get;
             set;
         }
+        public virtual DbSet<Product> Product
+        {
+            get;
+            set;
+        }
     }
 }
